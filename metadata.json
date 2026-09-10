@@ -1,0 +1,6 @@
+{
+  "name": "Bitcoin On-Chain Wallet & AI Suite",
+  "description": "Real-time Bitcoin blockchain explorer, live on-chain wallet balance & UTXO inspector, fee estimator, AI crypto assistant, and Gemini image generator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
