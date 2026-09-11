@@ -39,11 +39,25 @@ app.get("/api/btc/address/:address", async (req, res) => {
   }
 
   try {
-    // Primary source: Mempool.space
+    // Helper with timeout for resilient fetching of large addresses
+    const fetchWithTimeout = async (url: string, timeoutMs = 8000) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timer);
+        return res;
+      } catch (err) {
+        clearTimeout(timer);
+        throw err;
+      }
+    };
+
+    // Primary source: Mempool.space with resilient timeouts
     const [addrRes, utxoRes, txsRes] = await Promise.allSettled([
-      fetch(`https://mempool.space/api/address/${encodeURIComponent(address)}`),
-      fetch(`https://mempool.space/api/address/${encodeURIComponent(address)}/utxo`),
-      fetch(`https://mempool.space/api/address/${encodeURIComponent(address)}/txs`),
+      fetchWithTimeout(`https://mempool.space/api/address/${encodeURIComponent(address)}`),
+      fetchWithTimeout(`https://mempool.space/api/address/${encodeURIComponent(address)}/utxo`),
+      fetchWithTimeout(`https://mempool.space/api/address/${encodeURIComponent(address)}/txs`),
     ]);
 
     let addressData: any = null;
@@ -65,11 +79,27 @@ app.get("/api/btc/address/:address", async (req, res) => {
     }
 
     if (utxoRes.status === "fulfilled" && utxoRes.value.ok) {
-      utxoData = await utxoRes.value.json();
+      try {
+        const rawUtxos = await utxoRes.value.json();
+        if (Array.isArray(rawUtxos)) {
+          // Cap/paginate large UTXO sets (e.g., max 100 UTXOs for high performance and stability)
+          utxoData = rawUtxos.slice(0, 100);
+        }
+      } catch (e) {
+        utxoData = [];
+      }
     }
 
     if (txsRes.status === "fulfilled" && txsRes.value.ok) {
-      txsData = await txsRes.value.json();
+      try {
+        const rawTxs = await txsRes.value.json();
+        if (Array.isArray(rawTxs)) {
+          // Cap large transaction lists (e.g., max 50 recent txs)
+          txsData = rawTxs.slice(0, 50);
+        }
+      } catch (e) {
+        txsData = [];
+      }
     }
 
     const fundedSats = addressData.chain_stats.funded_txo_sum || 0;

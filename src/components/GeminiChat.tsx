@@ -397,6 +397,7 @@ export const GeminiChat: FC = () => {
               <option value="UtxoD3BlockGraph.tsx">src/components/UtxoD3BlockGraph.tsx</option>
               <option value="LivePaymentReceiver.tsx">src/components/LivePaymentReceiver.tsx</option>
               <option value="PayoutManager.tsx">src/components/PayoutManager.tsx</option>
+              <option value="HubCoinEngine.tsx">src/components/HubCoinEngine.tsx</option>
               <option value="App.tsx">src/App.tsx</option>
               <option value="server.ts">server.ts (Express Backend)</option>
             </select>

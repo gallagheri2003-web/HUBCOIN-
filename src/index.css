@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #0c0c0e;
+    --ink: #e4e4e7;
+    --accent: #f59e0b;
+    --surface: #18181b;
+    --ink-faint: rgba(228, 228, 231, 0.1);
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+

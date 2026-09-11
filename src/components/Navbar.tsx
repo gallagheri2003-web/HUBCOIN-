@@ -9,7 +9,8 @@ import {
   RefreshCw,
   TrendingUp,
   TrendingDown,
-  ArrowUpRight
+  ArrowUpRight,
+  Zap
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -28,37 +29,34 @@ export const Navbar: FC<NavbarProps> = ({
   isPriceLoading,
 }) => {
   const tabs = [
-    { id: 'wallet', label: 'Wallet & UTXO Explorer', icon: Wallet },
-    { id: 'payouts', label: 'Personal Payouts & Wallets', icon: ArrowUpRight },
-    { id: 'mempool', label: 'Mempool & Fee Engine', icon: Activity },
-    { id: 'tx-tools', label: 'TX Lookup & Broadcaster', icon: Send },
-    { id: 'ai-chat', label: 'Gemini Crypto AI', icon: Bot },
-    { id: 'ai-image', label: 'AI Image Studio', icon: Sparkles },
+    { id: 'wallet', label: '01. Wallet & UTXO Explorer', icon: Wallet },
+    { id: 'payouts', label: '02. Personal Payouts', icon: ArrowUpRight },
+    { id: 'ai-chat', label: '03. Gemini Crypto AI', icon: Bot },
   ];
 
   const isPositive = (priceData?.change24h ?? 0) >= 0;
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/95 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-800 bg-[#0c0c0e]/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
         
         {/* Brand & Live Network Status */}
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-white shadow-sm ring-2 ring-amber-500/20">
-            <span className="font-mono text-xl font-black">₿</span>
+          <div className="flex h-10 w-10 items-center justify-center rounded bg-amber-500 text-[#0c0c0e] font-black text-xl shadow-md">
+            ₿
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-serif text-lg font-bold tracking-tight text-zinc-900">
+              <h1 className="font-syne text-xl font-extrabold tracking-tight text-zinc-100 uppercase">
                 SatoshiSuite
               </h1>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-600/20">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                Mainnet Live
+              <span className="inline-flex items-center gap-1 rounded bg-emerald-950/80 px-2 py-0.5 font-mono text-[10px] font-bold text-emerald-400 border border-emerald-800/50">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                MAINNET LIVE
               </span>
             </div>
-            <p className="text-xs text-zinc-500">
-              Live On-Chain Explorer & AI Cryptographic Suite
+            <p className="font-mono text-[10px] uppercase tracking-wider text-amber-500/80">
+              Bitcoin AI Intelligence & On-Chain Engine
             </p>
           </div>
         </div>
@@ -66,18 +64,18 @@ export const Navbar: FC<NavbarProps> = ({
         {/* Live Market Price Widget */}
         <div className="flex items-center justify-between gap-3 sm:justify-end">
           {priceData ? (
-            <div className="flex items-center gap-2.5 rounded-lg border border-zinc-200 bg-zinc-50/80 px-3 py-1.5 text-sm">
+            <div className="flex items-center gap-3 rounded border border-zinc-800 bg-[#18181b] px-4 py-2 text-sm shadow-inner">
               <div className="flex flex-col">
-                <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
                   BTC / USD
                 </span>
-                <span className="font-mono text-sm font-bold text-zinc-900">
+                <span className="font-mono text-base font-bold text-zinc-100">
                   ${priceData.priceUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
               
-              <div className={`flex items-center gap-0.5 rounded px-1.5 py-0.5 text-xs font-semibold ${
-                isPositive ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+              <div className={`flex items-center gap-0.5 rounded px-2 py-0.5 font-mono text-xs font-bold ${
+                isPositive ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/40' : 'bg-rose-950 text-rose-400 border border-rose-800/40'
               }`}>
                 {isPositive ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                 <span>{isPositive ? '+' : ''}{priceData.change24h.toFixed(2)}%</span>
@@ -88,20 +86,20 @@ export const Navbar: FC<NavbarProps> = ({
                 onClick={onRefreshPrice}
                 disabled={isPriceLoading}
                 title="Refresh Live Price"
-                className="ml-1 rounded p-1 text-zinc-400 hover:bg-zinc-200 hover:text-zinc-700 transition disabled:opacity-50"
+                className="ml-1 rounded p-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition disabled:opacity-50"
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${isPriceLoading ? 'animate-spin' : ''}`} />
               </button>
             </div>
           ) : (
-            <div className="h-10 w-44 animate-pulse rounded-lg bg-zinc-100" />
+            <div className="h-12 w-48 animate-pulse rounded bg-zinc-900 border border-zinc-800" />
           )}
         </div>
       </div>
 
       {/* Navigation Sub-bar */}
-      <nav className="mx-auto flex max-w-7xl overflow-x-auto px-4 sm:px-6 scrollbar-none">
-        <div className="flex space-x-1 border-t border-zinc-100 py-1.5">
+      <nav className="mx-auto flex max-w-7xl overflow-x-auto px-6 scrollbar-none">
+        <div className="flex space-x-2 border-t border-zinc-800/80 py-2.5">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -110,13 +108,13 @@ export const Navbar: FC<NavbarProps> = ({
                 key={tab.id}
                 id={`nav-tab-${tab.id}`}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-3.5 py-2 text-sm font-medium transition-all ${
+                className={`flex items-center gap-2 whitespace-nowrap rounded px-4 py-2 font-mono text-xs uppercase tracking-wider transition-all ${
                   isActive
-                    ? 'bg-zinc-900 text-white shadow-xs'
-                    : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                    ? 'bg-amber-500 text-[#0c0c0e] font-bold shadow-md'
+                    : 'text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-200'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${isActive ? 'text-amber-400' : 'text-zinc-400'}`} />
+                <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-[#0c0c0e]' : 'text-amber-500'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -126,3 +124,4 @@ export const Navbar: FC<NavbarProps> = ({
     </header>
   );
 };
+

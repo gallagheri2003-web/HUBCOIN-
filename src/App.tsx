@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { WalletExplorer } from './components/WalletExplorer';
 import { PayoutManager } from './components/PayoutManager';
-import { MempoolDashboard } from './components/MempoolDashboard';
-import { TxBroadcaster } from './components/TxBroadcaster';
 import { GeminiChat } from './components/GeminiChat';
-import { GeminiImageStudio } from './components/GeminiImageStudio';
 import { BtcPriceData, MempoolFees } from './types';
 import { api } from './services/api';
 import { ShieldCheck, Cpu, Database, Activity, Bot, Sparkles, ExternalLink } from 'lucide-react';
@@ -55,7 +52,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-100/70 font-sans text-zinc-900 flex flex-col selection:bg-amber-200 selection:text-amber-900">
+    <div className="min-h-screen bg-[#0c0c0e] font-sans text-[#e4e4e7] flex flex-col selection:bg-amber-500 selection:text-[#0c0c0e]">
       
       {/* Top Main Navigation Bar */}
       <Navbar
@@ -67,7 +64,7 @@ export default function App() {
       />
 
       {/* Main Content Viewport */}
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6">
+      <main className="flex-1 mx-auto w-full max-w-7xl px-6 py-8">
         {activeTab === 'wallet' && (
           <WalletExplorer priceData={priceData} feeData={feeData} />
         )}
@@ -76,54 +73,18 @@ export default function App() {
           <PayoutManager priceData={priceData} feeData={feeData} />
         )}
 
-        {activeTab === 'mempool' && (
-          <MempoolDashboard
-            priceData={priceData}
-            feeData={feeData}
-            onRefreshFees={fetchFees}
-            isFeeLoading={isFeeLoading}
-          />
-        )}
-
-        {activeTab === 'tx-tools' && (
-          <TxBroadcaster />
-        )}
-
         {activeTab === 'ai-chat' && (
           <GeminiChat />
         )}
-
-        {activeTab === 'ai-image' && (
-          <GeminiImageStudio />
-        )}
       </main>
 
-      {/* Modern Status Footer */}
-      <footer className="border-t border-zinc-200 bg-white py-6">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+      {/* Variation 2 Status Footer */}
+      <footer className="border-t border-zinc-800 bg-[#0c0c0e] px-6 py-4">
+        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] opacity-70">
+          <div>SATOSHISUITE PROTOCOL // V3.7</div>
           <div className="flex items-center gap-2">
-            <span className="font-serif font-bold text-zinc-800">SatoshiSuite</span>
-            <span>•</span>
-            <span>Live On-Chain Explorer & AI Cryptographic Intelligence</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              Bitcoin Mainnet Node Active
-            </span>
-            <span>•</span>
-            <a
-              href="https://mempool.space"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-zinc-900 inline-flex items-center gap-1"
-            >
-              <span>Mempool.space Feed</span>
-              <ExternalLink className="h-3 w-3" />
-            </a>
-            <span>•</span>
-            <span className="font-mono">Gemini 3.7 Flash & Imagen Engine</span>
+            <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span>GEMINI ENGINE & IMAGEN ACTIVE</span>
           </div>
         </div>
       </footer>

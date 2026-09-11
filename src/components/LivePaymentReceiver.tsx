@@ -153,31 +153,6 @@ export const LivePaymentReceiver: FC<LivePaymentReceiverProps> = ({
     return () => clearInterval(interval);
   }, [address, isListening, lastTxCount]);
 
-  // Handle Simulation
-  const handleSimulatePayment = () => {
-    const simAmount = parsedAmountBtc > 0 ? parsedAmountBtc : 0.005;
-    const simTxid = `sim-tx-${Math.random().toString(36).substring(2, 10)}${Math.random().toString(36).substring(2, 10)}`;
-
-    playPaymentSound();
-
-    const paymentRecord = {
-      id: `sim-${Date.now()}`,
-      amountBtc: simAmount,
-      time: new Date().toLocaleTimeString(),
-      txid: simTxid,
-      isSimulated: true,
-    };
-
-    setRecentLivePayments((prev) => [paymentRecord, ...prev]);
-    setLiveBannerAlert({ amountBtc: simAmount, txid: simTxid, isSimulated: true });
-
-    if (onPaymentDetected) {
-      onPaymentDetected(simAmount, simTxid);
-    }
-
-    setTimeout(() => setLiveBannerAlert(null), 8000);
-  };
-
   const handleCopyUri = () => {
     navigator.clipboard.writeText(bitcoinUri);
     setCopied(true);
@@ -325,22 +300,6 @@ export const LivePaymentReceiver: FC<LivePaymentReceiverProps> = ({
               </button>
             ))}
           </div>
-
-          {/* Test Live Payment Button */}
-          <div className="pt-2 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="text-[11px] text-zinc-500">
-              Need to test the live payment listener right now in preview?
-            </div>
-            <button
-              id="btn-simulate-live-payment"
-              type="button"
-              onClick={handleSimulatePayment}
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-500 transition shrink-0"
-            >
-              <Play className="h-3.5 w-3.5" />
-              <span>Simulate Incoming Live Payment</span>
-            </button>
-          </div>
         </div>
 
         {/* Right QR Code & URI (5 cols) */}
@@ -382,11 +341,6 @@ export const LivePaymentReceiver: FC<LivePaymentReceiverProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="font-mono font-bold text-emerald-800">+{p.amountBtc.toFixed(8)} BTC</span>
                   <span className="text-zinc-500">at {p.time}</span>
-                  {p.isSimulated && (
-                    <span className="rounded bg-emerald-100 px-1.5 py-0.2 text-[9px] text-emerald-800 font-semibold">
-                      Simulated
-                    </span>
-                  )}
                 </div>
 
                 <a

@@ -3,6 +3,7 @@ import { BtcAddressData, BtcPriceData, MempoolFees } from '../types';
 import { api } from '../services/api';
 import { UtxoD3BlockGraph } from './UtxoD3BlockGraph';
 import { LivePaymentReceiver } from './LivePaymentReceiver';
+import { FederalComplianceVerifier } from './FederalComplianceVerifier';
 import QRCode from 'qrcode';
 import { 
   Search, 
@@ -468,7 +469,13 @@ export const WalletExplorer: FC<WalletExplorerProps> = ({ priceData, feeData }) 
             }}
           />
 
-          {/* Interactive Fund Allocation & Transaction Simulator (Based on real on-chain UTXO model) */}
+          {/* Federal Self-Custody Message Auto-Signer & Compliance Verifier */}
+          <FederalComplianceVerifier
+            address={data.address}
+            priceData={priceData}
+          />
+
+          {/* Interactive Fund Allocation & Transaction Planner (Based on real on-chain UTXO model) */}
           <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs">
             <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
               <div className="flex items-center gap-2">
